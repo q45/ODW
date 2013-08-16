@@ -19,6 +19,7 @@ script PSAppDelegate
 	property ilp_folder_list : null
 	property textField : missing value
 	property statusTextField : missing value
+	property  excel_file_path : "quintin.smith:Desktop:studiotest.xlsx" as text
 	
 	
 	
@@ -54,32 +55,30 @@ script PSAppDelegate
 		end tell
 	end start_
 	
+	on reset_input_(sender)
+		textField's setStringValue_(excel_file_path) as text
+	end reset_input_
+	
 	
 	on input_(sender)
-		status("Choosing input excel file")
+		log textField's stringValue()
 		tell application "Finder"
-			set input_text to ((choose folder default location (path to desktop))as string)
+			set input_file to (choose folder) as text
 		end tell
 		
-		#set currentTextFieldText to input_text's' stringValue() as text
-		
+		textField's setStringValue_(input_file) as text
 	end input_
 	
 	on output_(sender)
-		status("Choosing output folder")
+		
+		log output_text's stringValue()
+		
 		tell application "Finder"
-			if current_move_or_copy = 0 then
-				tell application "Finder"
-					#set output_text to (choose folder default location(file obs_path as alias)) as string)
-					tell myTextField to setStringValue_(output_text)
-					#output_text setStringValue_((choose folder default location (file obs_path as alias))as string)
-				end tell
-				else
-				#output_text setStringValue_((choose folder default location(file desk_to_path as alias)) as string)
-				tell myTextField to setStringValue_(desk_to_path)
-			end if
+			set output_file_path to (choose folder)as text
+			
 		end tell
-		status("")
+		
+		output_text's setStringValue_(output_file_path) as text
 	end output_
 	
 	on folderFinder(mmNumber)
@@ -104,7 +103,8 @@ script PSAppDelegate
 	on applicationWillFinishLaunching_(aNotification)
 		-- Insert code here to initialize your application before any files are opened
 
-		textField's setStringValue_("quintin.smith:Desktop:studiotest.xlsx") as text
+		textField's setStringValue_(excel_file_path) as text
+		
 		#textField's setStringValue_("Macintosh HD:Users:rick.hayward:Desktop:Image Pull.xlsx") as text
 		output_text's setStringValue_("Macintosh HD:Users:rick.hayward:Desktop:RENAME") as text
 		
